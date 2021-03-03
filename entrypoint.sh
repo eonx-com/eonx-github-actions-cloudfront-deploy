@@ -1,3 +1,5 @@
 #!/bin/bash
 set -e
-eval ${INPUT_CMD}
+echo ${INPUT_CMD} > run.sh;
+chmod +x ./run.sh;
+./run.sh;
