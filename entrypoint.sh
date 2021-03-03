@@ -1,4 +1,3 @@
 #!/bin/bash
 set -e
-
-$INPUT_CMD
+eval ${INPUT_CMD}
