@@ -13,6 +13,9 @@ if [[ -z "${SOURCE_PATH}" ]]; then echo "ERROR: Missing required 'SOURCE_PATH' e
 # If an environment file was specified, make sure it exists before we start
 if [[ -n "${ENVIRONMENT_SOURCE_FILENAME}" && ! -f "${ENVIRONMENT_SOURCE_FILENAME}" ]]; then echo "ERROR: The specified environment file (${ENVIRONMENT_SOURCE_FILENAME}) could not be found"; exit 1; fi
 
+# Set default ACL
+if [[ -z "${ACL}" ]]; then export ACL="public-read"; fi
+
 # Sync files to S3 bucket
 echo "Syncing To S3 Bucket"
 aws s3 sync "${SOURCE_PATH}" "s3://${DESTINATION_BUCKET}" --acl "${ACL}" --metadata "Commit=${GITHUB_SHA}" --delete;
@@ -27,7 +30,6 @@ if [[ -n "${ENVIRONMENT_SOURCE_FILENAME}" ]]; then
 fi
 
 # Fix the mime types that AWS seems intent on screwing up
-if [[ -z "${ACL}" ]]; then export ACL="public-read"; fi
 echo "Rewriting MIME Types: text/css"
 aws s3 cp "s3://${DESTINATION_BUCKET}/" "s3://${DESTINATION_BUCKET}/" --exclude "*" --recursive --metadata-directive "REPLACE" --acl "${ACL}" --include "*.css" --content-type "text/css"
 echo "Rewriting MIME Types: text/javascript"
