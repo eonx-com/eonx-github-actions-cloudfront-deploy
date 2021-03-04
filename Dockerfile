@@ -7,8 +7,6 @@ RUN apk add --no-cache \
         python3 \
         py3-pip \
     && pip3 install --upgrade pip \
-    && pip3 install \
-        awscli \
     && rm -rf /var/cache/apk/*
 
 ENV GLIBC_VER=2.31-r0
