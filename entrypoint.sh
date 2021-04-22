@@ -1,16 +1,20 @@
 #!/bin/bash
-set -eo pipefail
+set -eox pipefail
 
 # Validate required environment variables
 echo "Validating Environment Variables"
-if [[ -z "${AWS_DEFAULT_REGION}" ]]; then echo "ERROR: Missing required 'AWS_DEFAULT_REGION' environment variable"; fi
-if [[ -z "${AWS_ACCESS_KEY_ID}" ]]; then echo "ERROR: Missing required 'AWS_ACCESS_KEY_ID' environment variable"; fi
-if [[ -z "${AWS_SECRET_ACCESS_KEY}" ]]; then echo "ERROR: Missing required 'AWS_SECRET_ACCESS_KEY' environment variable"; fi
-if [[ -z "${DESTINATION_BUCKET}" ]]; then echo "ERROR: Missing required 'DESTINATION_BUCKET' environment variable"; fi
-if [[ -z "${GITHUB_SHA}" ]]; then echo "ERROR: Missing required 'GITHUB_SHA' environment variable"; fi
-if [[ -z "${SOURCE_PATH}" ]]; then echo "ERROR: Missing required 'SOURCE_PATH' environment variable"; fi
+if [[ -z "${AWS_DEFAULT_REGION}" ]]; then echo "ERROR: Missing required 'AWS_DEFAULT_REGION' environment variable"; error="1"; fi
+if [[ -z "${AWS_ACCESS_KEY_ID}" ]]; then echo "ERROR: Missing required 'AWS_ACCESS_KEY_ID' environment variable"; error="1"; fi
+if [[ -z "${AWS_SECRET_ACCESS_KEY}" ]]; then echo "ERROR: Missing required 'AWS_SECRET_ACCESS_KEY' environment variable"; error="1"; fi
+if [[ -z "${DESTINATION_BUCKET}" ]]; then echo "ERROR: Missing required 'DESTINATION_BUCKET' environment variable"; error="1"; fi
+if [[ -z "${GITHUB_SHA}" ]]; then echo "ERROR: Missing required 'GITHUB_SHA' environment variable"; error="1"; fi
+if [[ -z "${SOURCE_PATH}" ]]; then echo "ERROR: Missing required 'SOURCE_PATH' environment variable"; error="1"; fi
 
-export
+if [[ "${error}" == "1" ]]; then
+  exit 1;
+fi
+
+export;
 
 # If an environment file was specified, make sure it exists before we start
 if [[ -n "${ENVIRONMENT_SOURCE_FILENAME}" && ! -f "${ENVIRONMENT_SOURCE_FILENAME}" ]]; then echo "ERROR: The specified environment file (${ENVIRONMENT_SOURCE_FILENAME}) could not be found"; exit 1; fi
@@ -18,7 +22,7 @@ if [[ -n "${ENVIRONMENT_SOURCE_FILENAME}" && ! -f "${ENVIRONMENT_SOURCE_FILENAME
 # Set default ACL
 if [[ -z "${ACL}" ]]; then export ACL="public-read"; fi
 
-aws sts get-caller-identity
+aws sts get-caller-identity;
 
 # Sync files to S3 bucket
 echo "Syncing To S3 Bucket"
