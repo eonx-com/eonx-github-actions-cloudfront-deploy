@@ -10,6 +10,8 @@ if [[ -z "${DESTINATION_BUCKET}" ]]; then echo "ERROR: Missing required 'DESTINA
 if [[ -z "${GITHUB_SHA}" ]]; then echo "ERROR: Missing required 'GITHUB_SHA' environment variable"; fi
 if [[ -z "${SOURCE_PATH}" ]]; then echo "ERROR: Missing required 'SOURCE_PATH' environment variable"; fi
 
+export
+
 # If an environment file was specified, make sure it exists before we start
 if [[ -n "${ENVIRONMENT_SOURCE_FILENAME}" && ! -f "${ENVIRONMENT_SOURCE_FILENAME}" ]]; then echo "ERROR: The specified environment file (${ENVIRONMENT_SOURCE_FILENAME}) could not be found"; exit 1; fi
 
