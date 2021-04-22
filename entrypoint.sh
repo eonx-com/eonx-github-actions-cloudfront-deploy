@@ -51,7 +51,7 @@ if [[ -n "${INVALIDATE_CLOUDFRONT_VERSION}" ]]; then
   do
     if [[ $(aws cloudfront list-tags-for-resource --resource "${dist}" | jq ".Tags.Items[] | select(.Key==\"Version\") | .Value==\"${INVALIDATE_CLOUDFRONT_VERSION}\"") == "true" ]]; then
       cloudfront_id=$(cut -d '/' -f2 <<< "${dist}")
-      echo -e "Invalidating: ${cloudfront_id}\n"
+      echo "Invalidating: ${cloudfront_id}"
       aws cloudfront create-invalidation --distribution-id "${cloudfront_id}" --paths "/*" --region "us-east-1" &
     fi
   done
