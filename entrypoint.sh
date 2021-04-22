@@ -18,6 +18,8 @@ if [[ -n "${ENVIRONMENT_SOURCE_FILENAME}" && ! -f "${ENVIRONMENT_SOURCE_FILENAME
 # Set default ACL
 if [[ -z "${ACL}" ]]; then export ACL="public-read"; fi
 
+aws sts get-caller-identity
+
 # Sync files to S3 bucket
 echo "Syncing To S3 Bucket"
 aws s3 sync "${SOURCE_PATH}" "s3://${DESTINATION_BUCKET}" --acl "${ACL}" --metadata "Commit=${GITHUB_SHA}" --delete;
