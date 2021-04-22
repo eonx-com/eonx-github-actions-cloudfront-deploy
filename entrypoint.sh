@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eox pipefail
+set -eo pipefail
 
 # Validate required environment variables
 echo "Validating Environment Variables"
@@ -14,15 +14,11 @@ if [[ "${error}" == "1" ]]; then
   exit 1;
 fi
 
-export;
-
 # If an environment file was specified, make sure it exists before we start
 if [[ -n "${ENVIRONMENT_SOURCE_FILENAME}" && ! -f "${ENVIRONMENT_SOURCE_FILENAME}" ]]; then echo "ERROR: The specified environment file (${ENVIRONMENT_SOURCE_FILENAME}) could not be found"; exit 1; fi
 
 # Set default ACL
 if [[ -z "${ACL}" ]]; then export ACL="public-read"; fi
-
-aws sts get-caller-identity;
 
 # Sync files to S3 bucket
 echo "Syncing To S3 Bucket"
