@@ -1,1 +1,1 @@
-FROM eonxcom/github-actions-cloudfront-deploy:v1.6
+FROM eonxcom/github-actions-cloudfront-deploy:v1.7
